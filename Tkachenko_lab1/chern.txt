@@ -1,0 +1,62 @@
+
+#include <iostream>
+#include <cstdlib> // для exit()>
+
+
+
+using namespace std;
+
+int menu()
+{
+    int variant;
+	system("cls");
+	cout << "1.Add pipe" << endl;
+	cout << "2.Add CS" << endl;
+	cout << "3.View all objects" << endl;
+	cout << "4.Edit pipe" << endl;
+	cout << "5.Edit CS" << endl;
+	cout << "6.Save" << endl;
+	cout << "7.Download" << endl;
+	cout << "0.Exit" << endl;
+	cout << ">";
+    cin >> variant;
+    return variant;
+}
+
+
+
+int main(int argc, char* argv[])
+{
+    int variant = menu();
+
+    switch (variant) {
+    case 1:
+        variant = InputPipe();
+    case 2:
+        cout << "Add CS" << endl;
+        break;
+    case 3:
+        cout << "View all objects" << endl;
+        break;
+    case 4:
+        cout << "Edit pipe" << endl;
+        break;
+    case 5:
+        cout << "Edit CS" << endl;
+        break;
+    case 6:
+        cout << "" << endl;
+        break;
+    case 7:
+        cout << "" << endl;
+        break;
+    case 0:
+        cout << "Exit" << endl;
+        exit(EXIT_SUCCESS);
+        break;
+    default:
+        cerr << "Error" << endl;
+        exit(EXIT_FAILURE);
+    }
+    return 0;
+}
