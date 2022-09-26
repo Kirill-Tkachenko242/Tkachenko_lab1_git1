@@ -2,8 +2,8 @@
 
 
 #include <iostream>
-
 #include <vector>
+#include <fstream>
 
 
 
@@ -43,28 +43,39 @@ void PrintPipe(const Pipe& s)
 }
 
 
-void EditPipe(Pipe& s)
+Pipe LoadPipe()
 {
-    s.diametr -= 0.5;
+    ifstream fin;
+    fin.open("data.txt", ios::in);
+    Pipe s;
+    fin >> s.lenght;
+    fin >> s.diametr;
+    fin >> s.repair;
+    fin.close();
+    return s;
 }
 
 void SavePipe(const Pipe& s)
 {
-
-    cout << "lenght: " << s.lenght;
-    cout << "\tdiametr: " << s.diametr;
-    cout << "\trepair: " << s.repair << endl;
+    ofstream fout;
+    fout.open("data.txt", 'w');
+    fout << s.lenght << endl << s.diametr << endl << s.repair << endl;
+    fout.close();
 }
 
 
-
+void EditPipe(Pipe& s)
+{
+    s.diametr -= 0.5;
+}
 
 int main()
 {
     Pipe st = InputPipe();
     PrintPipe(st);
     EditPipe(st);
-    PrintPipe(st);
+    SavePipe(st);
+    PrintPipe(LoadPipe());
     return 0;
 }
 
