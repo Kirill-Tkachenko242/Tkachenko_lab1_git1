@@ -71,11 +71,10 @@ void EditPipe(Pipe& s)
 
 int main()
 {
-    Pipe st = InputPipe();
+    Pipe st = LoadPipe();
     PrintPipe(st);
     EditPipe(st);
     SavePipe(st);
-    PrintPipe(LoadPipe());
     return 0;
 }
 
