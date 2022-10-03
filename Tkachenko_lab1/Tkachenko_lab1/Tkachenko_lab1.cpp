@@ -29,20 +29,39 @@ T GetCorrectNumber(T min, T max)
 
 
 
+
 struct CS
 {
     string name;
     double shop;
     double shopr;
     double ef;
+    double s;
 };
 
 struct Pipe
 {
     double lenght;
     double diametr;
-    string repair;
+    double repair;
 };
+
+
+
+
+
+void DefaultPipe(Pipe& pipe) {
+    pipe.lenght = 0;
+    pipe.diametr = 0;
+    pipe.repair = 0;
+}
+void DefaultCS(CS& CS) {
+    CS.name = "NULL";
+    CS.shop = 0;
+    CS.shopr = 0;
+    CS.ef = 0;
+}
+
 
 
 bool IsLenghtCorrect(double d)
@@ -52,6 +71,14 @@ bool IsLenghtCorrect(double d)
 bool IsDiametrCorrect(double d)
 {
     return d >= 2 && d <= 1000;
+}
+bool IsRepairCorrect(int d)
+{
+    return d >= 0 && d <= 1;
+}
+bool IsShopCorrect(double d)
+{
+    return d >= 1 && d <= 1000;
 }
 
 Pipe InputPipe()
@@ -71,8 +98,13 @@ Pipe InputPipe()
         cout << "diametr: ";
         cin >> s.diametr;
     }while (cin.fail() || !IsDiametrCorrect(s.diametr));
-    cout << "repair: ";
-    cin >> s.repair;
+    do
+    {
+        cin.clear();
+        cin.ignore(1i64, '\n');
+        cout << "repair(0-no, 1-yes): ";
+        cin >> s.repair;
+    } while (cin.fail() || !IsRepairCorrect(s.repair));
     return s;
 }
 
@@ -102,6 +134,13 @@ CS InputCS()
         cout << "efficiency: ";
         cin >> c.ef;
     } while (cin.fail() || !IsDiametrCorrect(c.ef));
+    do
+    {
+        cin.clear();
+        cin.ignore(100000, '\n');
+        cout << "start or stop the shop(0-no, 1-yes): ";
+        cin >> c.s;
+    } while (cin.fail() || !IsRepairCorrect(c.s));
     return c;
 }
 
@@ -116,8 +155,8 @@ void PrintCS(const CS& c)
     cout << "Name: " << c.name;
     cout << "\tShops: " << c.shop;
     cout << "\tRepair shops: " << c.shopr;
-    cout << "\tefficiency:" << c.ef << endl;
-
+    cout << "\tefficiency:" << c.ef;
+    cout << "\tstart or stop the shop:" << c.s << endl;
 }
 
 
@@ -126,7 +165,7 @@ Pipe LoadPipe()
 {
     Pipe s;
     ifstream fin;
-    fin.open("data.txt", 'r');
+    fin.open("data.txt", ios::in);
     if (fin.is_open())
     {
         fin >> s.lenght;
@@ -136,12 +175,28 @@ Pipe LoadPipe()
     }
     return s;
 }
+CS LoadCS()
+{
+    CS c;
+    ifstream fin;
+    fin.open("data2.txt", ios::in);
+    if (fin.is_open())
+    {
+        fin >> c.name;
+        fin >> c.shop;
+        fin >> c.shopr;
+        fin >> c.ef;
+        fin >> c.s;
+        fin.close();
+    }
+    return c;
+}
 
 
 void SavePipe(const Pipe& s)
 {
     ofstream fout;
-    fout.open("data.txt", 'w');
+    fout.open("data.txt", ios::out);
     if (fout.is_open())
     {
         fout << s.lenght << endl 
@@ -150,20 +205,46 @@ void SavePipe(const Pipe& s)
         fout.close();
     }
 }
+void SaveCS(const CS& c)
+{
+    ofstream fout;
+    fout.open("data2.txt", ios::out);
+    if (fout.is_open())
+    {
+        fout << c.name << endl
+            << c.shop << endl
+            << c.shopr << endl
+            << c.ef << endl
+            << c.s << endl;
+        fout.close();
+    }
+}
 
 
 void EditPipe(Pipe& s)
 {
-    s.diametr -= 0.5;
-    s.diametr = IsDiametrCorrect(s.diametr) ? s.diametr:2;
+    if (s.repair == 0) {
+        s.repair = 1;
+    }
+    if (s.repair == 1) {
+        s.repair = 0;
+    }
+    else {
+        s.repair = GetCorrectNumber(0, 1);
+    }
+    s.repair = IsRepairCorrect(s.repair) ? s.repair:2;
 }
 
 
 void EditCS(CS& c)
 {
-    c.shop += 1;
-    c.shop = IsDiametrCorrect(c.shop) ? c.shop : 2;
-
+    if (c.s == 0) {
+        c.s = 1;
+    }
+    else {
+        c.s = 0;
+    }
+    c.s = IsRepairCorrect(c.s) ? c.s : 2;
 }
 
 void PrintMenu()
@@ -193,7 +274,7 @@ istream& operator >> (istream& in, Pipe& s)
     cout << "diametr:";
     s.diametr = GetCorrectNumber(2.0, 1000.0);
     cout << "repair: ";
-    in >> s.repair;
+    s.repair = GetCorrectNumber(0, 1);
     return in;
 }
 
@@ -210,17 +291,21 @@ istream& operator >> (istream& in, CS& c)
     cout << "Name: ";
     in >> c.name;
     cout << "Shops: ";
-    c.shop = GetCorrectNumber(2.0, 10000.0);
+    c.shop = GetCorrectNumber(1.0, 10000.0);
     cout << "Repair shops: ";
-    c.shopr = GetCorrectNumber(2.0, 1000.0);
+    c.shopr = GetCorrectNumber(0.0, 1000.0);
     cout << "efficiency: ";
-    c.ef = GetCorrectNumber(2.0, 1000.0);
+    c.ef = GetCorrectNumber(10.0, 100.0);
+    cout << "start or stop the shop: ";
+    c.ef = GetCorrectNumber(0, 1);
     return in;
 }
 int main()
 {
     Pipe st;
     CS cs;
+    DefaultPipe(st);
+    DefaultCS(cs);
     while (1)
     {
         PrintMenu();
@@ -246,11 +331,13 @@ int main()
         case 4:
         {
             SavePipe(st);
+            SaveCS(cs);
             break;
         }
         case 5:
         {
             st = LoadPipe();
+            cs = LoadCS();
             break;
         }
         case 6:
