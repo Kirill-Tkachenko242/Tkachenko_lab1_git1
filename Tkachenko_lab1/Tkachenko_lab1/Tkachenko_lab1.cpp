@@ -260,6 +260,14 @@ int main()
         }
         case 0:
         {
+            cout << "Should you save to file objects?Print 1 or 0" << endl;
+            if (GetCorrectNumber(0, 1) == 1) {
+                SavePipe(st);
+                SaveCS(cs);
+                return 0;
+            }
+            else {
+            }
             return 0;
         }
         default:
