@@ -2,16 +2,9 @@
 
 
 #include <iostream>
-#include <vector>
 #include <fstream>
 
-
-
 using namespace std;
-
-
-
-
 
 
 template <typename T>
@@ -26,9 +19,6 @@ T GetCorrectNumber(T min, T max)
     }
     return x;
 }
-
-
-
 
 struct CS
 {
@@ -47,9 +37,6 @@ struct Pipe
 };
 
 
-
-
-
 void DefaultPipe(Pipe& pipe) {
     pipe.lenght = 0;
     pipe.diametr = 0;
@@ -63,87 +50,6 @@ void DefaultCS(CS& CS) {
 }
 
 
-
-bool IsLenghtCorrect(double d)
-{
-    return d >= 2 && d <= 10000;
-}
-bool IsDiametrCorrect(double d)
-{
-    return d >= 2 && d <= 1000;
-}
-bool IsRepairCorrect(int d)
-{
-    return d >= 0 && d <= 1;
-}
-bool IsShopCorrect(double d)
-{
-    return d >= 1 && d <= 1000;
-}
-
-Pipe InputPipe()
-{
-    Pipe s;
-    do
-    {
-        cin.clear();
-        cin.ignore(100000, '\n');
-        cout << "lenght:";
-        cin >> s.lenght;
-    }while (cin.fail() || !IsLenghtCorrect(s.lenght));
-    do
-    {
-        cin.clear();
-        cin.ignore(100000, '\n');
-        cout << "diametr: ";
-        cin >> s.diametr;
-    }while (cin.fail() || !IsDiametrCorrect(s.diametr));
-    do
-    {
-        cin.clear();
-        cin.ignore(1i64, '\n');
-        cout << "repair(0-no, 1-yes): ";
-        cin >> s.repair;
-    } while (cin.fail() || !IsRepairCorrect(s.repair));
-    return s;
-}
-
-CS InputCS()
-{
-    CS c;
-    cout << "Name: ";
-    cin >> c.name;
-    do
-    {
-        cin.clear();
-        cin.ignore(100000, '\n');
-        cout << "Shops:";
-        cin >> c.shop;
-    } while (cin.fail() || !IsLenghtCorrect(c.shop));
-    do
-    {
-        cin.clear();
-        cin.ignore(100000, '\n');
-        cout << "Repair shops: ";
-        cin >> c.shopr;
-    } while (cin.fail() || !IsDiametrCorrect(c.shopr));
-    do
-    {
-        cin.clear();
-        cin.ignore(100000, '\n');
-        cout << "efficiency: ";
-        cin >> c.ef;
-    } while (cin.fail() || !IsDiametrCorrect(c.ef));
-    do
-    {
-        cin.clear();
-        cin.ignore(100000, '\n');
-        cout << "start or stop the shop(0-no, 1-yes): ";
-        cin >> c.s;
-    } while (cin.fail() || !IsRepairCorrect(c.s));
-    return c;
-}
-
 void PrintPipe(const Pipe& s)
 {
     cout << "lenght: " << s.lenght;
@@ -156,7 +62,7 @@ void PrintCS(const CS& c)
     cout << "\tShops: " << c.shop;
     cout << "\tRepair shops: " << c.shopr;
     cout << "\tefficiency:" << c.ef;
-    cout << "\tstart or stop the shop:" << c.s << endl;
+    cout << "\tstart or stop the shop(0-no, 1-yes):" << c.s << endl;
 }
 
 
@@ -232,7 +138,6 @@ void EditPipe(Pipe& s)
     else {
         s.repair = GetCorrectNumber(0, 1);
     }
-    s.repair = IsRepairCorrect(s.repair) ? s.repair:2;
 }
 
 
@@ -241,10 +146,13 @@ void EditCS(CS& c)
     if (c.s == 0) {
         c.s = 1;
     }
-    else {
+    if (c.s == 1) {
         c.s = 0;
     }
-    c.s = IsRepairCorrect(c.s) ? c.s : 2;
+    else {
+        c.s = GetCorrectNumber(0, 1);
+    }
+
 }
 
 void PrintMenu()
