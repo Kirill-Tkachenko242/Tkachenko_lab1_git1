@@ -1,6 +1,4 @@
 ﻿
-
-
 #include <iostream>
 #include <fstream>
 
@@ -47,6 +45,7 @@ void DefaultCS(CS& CS) {
     CS.shop = 0;
     CS.shopr = 0;
     CS.ef = 0;
+    CS.s = 0;
 }
 
 
@@ -83,11 +82,15 @@ Pipe LoadPipe()
 }
 CS LoadCS()
 {
+    Pipe s;
     CS c;
     ifstream fin;
-    fin.open("data2.txt", ios::in);
+    fin.open("data.txt", ios::in);
     if (fin.is_open())
     {
+        fin >> s.lenght;
+        fin >> s.diametr;
+        fin >> s.repair;
         fin >> c.name;
         fin >> c.shop;
         fin >> c.shopr;
@@ -99,8 +102,10 @@ CS LoadCS()
 }
 
 
-void SavePipe(const Pipe& s)
+void Save(const Pipe& s,const CS& c)
 {
+    int amount = 1;
+    int amount2 = 1;
     ofstream fout;
     fout.open("data.txt", ios::out);
     if (fout.is_open())
@@ -108,13 +113,7 @@ void SavePipe(const Pipe& s)
         fout << s.lenght << endl 
              << s.diametr << endl
              << s.repair << endl;
-        fout.close();
     }
-}
-void SaveCS(const CS& c)
-{
-    ofstream fout;
-    fout.open("data2.txt", ios::out);
     if (fout.is_open())
     {
         fout << c.name << endl
@@ -124,7 +123,9 @@ void SaveCS(const CS& c)
             << c.s << endl;
         fout.close();
     }
+    
 }
+
 
 
 void EditPipe(Pipe& s)
@@ -232,14 +233,17 @@ int main()
         }
         case 3:
         {
-            cout << st << endl;
-            cout << cs << endl;
+            if (st.lenght == 0 || st.diametr == 0) {
+                cout << "No Pipe" << endl;
+            }
+            else { cout << st << endl; }
+            if (cs.name == "NULL" || cs.shop == 0 || cs.shopr == 0) { cout << "No CS" << endl; }
+            else { cout << cs << endl; }
             break;
         }
         case 4:
         {
-            SavePipe(st);
-            SaveCS(cs);
+            Save(st, cs);
             break;
         }
         case 5:
@@ -262,8 +266,7 @@ int main()
         {
             cout << "Should you save to file objects?Print 1 or 0" << endl;
             if (GetCorrectNumber(0, 1) == 1) {
-                SavePipe(st);
-                SaveCS(cs);
+                Save(st, cs);
                 return 0;
             }
             else {
