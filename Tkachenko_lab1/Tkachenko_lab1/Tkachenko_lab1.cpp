@@ -68,6 +68,7 @@ void PrintCS(const CS& c)
 
 Pipe LoadPipe()
 {
+    string pipe_word;
     Pipe s;
     ifstream fin;
     fin.open("data.txt", ios::in);
@@ -106,24 +107,32 @@ CS LoadCS()
 
 void Save(const Pipe& s,const CS& c)
 {
-    int amount = 1;
-    int amount2 = 1;
     ofstream fout;
     fout.open("data.txt", ios::out);
     if (fout.is_open())
     {
-        fout << s.lenght << endl
-            << s.diametr << endl
-            << s.repair << endl
-            << "CS" << endl;
+        if (s.lenght == 0) {
+            fout << "" << endl;
+        }
+        else {
+            fout << s.lenght << endl
+                << s.diametr << endl
+                << s.repair << endl;
+        }
     }
     if (fout.is_open())
     {
-        fout << c.name << endl
-            << c.shop << endl
-            << c.shopr << endl
-            << c.ef << endl
-            << c.s << endl;
+        if (c.shop == 0) {
+            fout << "" << endl;
+        }
+        else {
+            fout << "CS" << endl
+                << c.name << endl
+                << c.shop << endl
+                << c.shopr << endl
+                << c.ef << endl
+                << c.s << endl;
+        }
         fout.close();
     }
     
