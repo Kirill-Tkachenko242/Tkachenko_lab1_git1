@@ -82,20 +82,22 @@ Pipe LoadPipe()
 }
 CS LoadCS()
 {
+    string cs_word;
     Pipe s;
     CS c;
     ifstream fin;
     fin.open("data.txt", ios::in);
     if (fin.is_open())
     {
-        fin >> s.lenght;
-        fin >> s.diametr;
-        fin >> s.repair;
-        fin >> c.name;
-        fin >> c.shop;
-        fin >> c.shopr;
-        fin >> c.ef;
-        fin >> c.s;
+        while (fin >> cs_word) {
+            if (cs_word == "CS") {
+                fin >> c.name;
+                fin >> c.shop;
+                fin >> c.shopr;
+                fin >> c.ef;
+                fin >> c.s;
+            }
+        }
         fin.close();
     }
     return c;
@@ -110,9 +112,10 @@ void Save(const Pipe& s,const CS& c)
     fout.open("data.txt", ios::out);
     if (fout.is_open())
     {
-        fout << s.lenght << endl 
-             << s.diametr << endl
-             << s.repair << endl;
+        fout << s.lenght << endl
+            << s.diametr << endl
+            << s.repair << endl
+            << "CS" << endl;
     }
     if (fout.is_open())
     {
